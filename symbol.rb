@@ -7,7 +7,7 @@ class Symbol
       :MUL_OP => /\*/,
       #:FACTOR => 5,
       :INTEGER => /[0-9]+/,
-      :IDENTIFIER => /[a-zA-Z]/,
+      :IDENTIFIER => /[^[a-zA-Z][a-zA-Z0-9_]*$/,
       :OPEN_PAREN => /\(/,
       :CLOSE_PAREN => /\)/,
       :LANG_IF => /if/,
