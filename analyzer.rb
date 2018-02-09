@@ -7,12 +7,28 @@ class Analyzer
     valid_statements?
   end
 
+  # TODO: not sure if this is going to be right
   def valid_stmts?
-    valid_stmt? or
-        (valid_stmt? and semi_colon? and valid_stmt?)
+      and_all?(valid_stmt?, semicolon?) \
+      or \
+      and_all?(valid_stmt?, semicolon?, valid_stmt?)
   end
 
   def valid_stmt?
 
+  end
+
+  def semi_colon?
+    @tokenizer.get_token_kind = Symbol::SYMBOLS[:SEMI_COL]
+  end
+
+  # and_all? takes variable number of boolean expressions and aggregates them into
+  # a final answer
+  def and_all? *exprs
+    ret = true
+    for exp in exprs
+      ret = (ret and exp)
+    end
+    ret
   end
 end

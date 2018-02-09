@@ -27,6 +27,6 @@ class Symbol
       #:LOG_FACTOR => 24,
       :LOG_REL_OP => /(<=)|(<)|(=)/,
       :SEMI_COL => /;/,
-      :ASSIGN_OP => /:=/,
+      :ASSIGN_OP => /:=/
   }
 end
