@@ -26,4 +26,5 @@ class Symbol
   LOG_FACTOR = 24
   LOG_REL_OP = 25
   SEMI_COL = 26
+  ASSIGN_OP = 27
 end
