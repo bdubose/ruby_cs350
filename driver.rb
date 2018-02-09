@@ -3,6 +3,10 @@
 # Ruby Assignment
 
 # This driver program takes one argument (the file name)
+
+require './analyzer'
+require './tokenizer'
+
 filename = ARGV[0]
 
 if ARGV.length == 1
@@ -16,7 +20,17 @@ if ARGV.length == 1
       string_contents += line
     end
 
-    .new(string_contents)
+    tokenizer = SimpTokenizer.new(string_contents)
+    analyzer = Analyzer.new(tokenizer)
+
+    valid = analyzer.valid_program?
+
+    if valid
+      puts "#{filename} is a valid SimPL program. Congrats."
+    else
+      puts "#{filename} has an error."
+    end
+
   else
     puts 'ERROR: The given filename does not exist.'
   end
