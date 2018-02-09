@@ -25,4 +25,5 @@ class Symbol
   LANG_NOT = 23
   LOG_FACTOR = 24
   LOG_REL_OP = 25
+  SEMI_COL = 26
 end
