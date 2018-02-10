@@ -9,23 +9,80 @@ class Analyzer
 
   # TODO: not sure if this is going to be right
   def valid_stmts?
-      (valid_stmt? and semi_colon?)                   \
-      or                                              \
-      (valid_stmt? and semi_colon? and valid_stmts?)
+    (valid_stmt? and semi_colon?)                   \
+    or                                              \
+    (valid_stmt? and semi_colon? and valid_stmts?)
   end
 
   def valid_stmt?
-
+    (identifier? and assign_op? and add_op?)                                                              \
+    or                                                                                                    \
+    (lang_if? and log_exp? and lang_then? and valid_stmts? and lang_end?)                                 \
+    or                                                                                                    \
+    (lang_if? and log_exp? and lang_then? and valid_stmts? and lang_else? and valid_stmts? and lang_end?) \
+    or                                                                                                    \
+    (lang_for? and identifier? and lang_from? and add_op? and lang_to? and add_op? and lang_do? and valid_stmts? and lang_end?) \
+    or                                                                                                    \
+    (lang_for? and identifier? and lang_from? and add_op? and lang_to? and add_op? and lang_by? and add_op? and lang_do? and valid_stmts? and lang_end?)
   end
 
+  def log_exp?
+    (log_term? and lang_and? and log_exp?)  \
+    or                                      \
+    (log_factor?)
+  end
 
-  #region SYMBOLS
+  def log_term?
+    (lang_not? and log_factor?) \
+    or                          \
+    (log_factor?)
+  end
+
+  def log_factor?
+    lang_true? or lang_false? or log_rel_op?
+  end
+
+  def log_rel_op?
+    (add_op? and lte? and add_op?) \
+    or                             \
+    (add_op? and lt? and add_op?)  \
+    or                             \
+    (add_op? and eq? and add_op?)
+  end
+
   def add_op?
-    @tokenizer.getKind = Symbol::SYMBOLS[:ADD_OP]
+    (mul_op? and plus? and add_op?) \
+    or                              \
+    (mul_op? and minus? and add_op?)\
+    or  mul_op?
   end
 
   def mul_op?
-    @tokenizer.getKind = Symbol::SYMBOLS[:MUL_OP]
+    (factor? and times? and mul_op?) \
+    or                               \
+    (factor? and div? and mul_op?)   \
+    or factor?
+  end
+
+  def factor?
+    integer? or identifier? or (open_paren? and add_op? and close_paren?)
+  end
+
+  #region SYMBOLS
+  def plus?
+    @tokenizer.getKind = Symbol::SYMBOLS[:PLUS]
+  end
+
+  def times?
+    @tokenizer.getKind = Symbol::SYMBOLS[:TIMES]
+  end
+
+  def minus?
+    @tokenizer.getKind = Symbol::SYMBOLS[:MINUS]
+  end
+
+  def div?
+    @tokeniser.getKind = Symbol::SYMBOLS[:DIV]
   end
 
   def integer?
@@ -92,8 +149,20 @@ class Analyzer
     @tokenizer.getKind = Symbol::SYMBOLS[:LANG_NOT]
   end
 
-  def log_rel_op?
-    @tokenizer.getKind = Symbol::SYMBOLS[:LOG_REL_OP]
+  def lang_and?
+    @tokenizer.getKind = Symbol::SYMBOLS[:LANG_AND]
+  end
+
+  def lte?
+    @tokenizer.getKind = Symbol::SYMBOLS[:LTE]
+  end
+
+  def lt?
+    @tokenizer.getKind = Symbol::SYMBOLS[:LT]
+  end
+
+  def eq?
+    @tokenizer.getKind = Symbol::SYMBOLS[:EQ]
   end
 
   def assign_op?
