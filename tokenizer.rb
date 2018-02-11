@@ -1,25 +1,24 @@
-require 'strscan'
 require './symbol'
 class SimpTokenizer
     
    
-    KEYS=Symbol::SYMBOLS.keys
+    KEYS = Symbol::SYMBOLS.keys
     VALID = Symbol::SYMBOLS.values
-    @@tokenKind
-    @@position=0
-    @@Array
+    $kind
+    $position = 0
+    $Array = []
 
     # constructor
     def initialize(str)
-    
+
         if str.empty?
                 print 'Invalid String'
         else
-          @@Array = str.split
-          @@Array << 'EOF'
-          print @@Array
+          $Array = str.split
+          $Array << 'EOF'
+          print $Array
         end
-        
+
     end
 
     # is this a valid token
@@ -28,17 +27,17 @@ class SimpTokenizer
             if val.match?(token)
                 return true
             end
-            
-        end 
+
+        end
          false
     end
 
 
     # consumes the current token
     def next_token
-        @@position+=1
-        if @@position == (@@Array.length)-1
-            @@tokenKind='N/A'
+        $position += 1
+        if $position == ($Array.length)-1
+            $kind='N/A'
              true
         end
     end
@@ -46,27 +45,27 @@ class SimpTokenizer
     # returns the kind of the next sequential token (SYMBOL)
     def next_token_kind
       for val in VALID
-        if val.match?(@@Array[@@position+1])
-          @@tokenKind= KEYS[VALID.find_index(val)]
+        if val.match?($Array[$position+1])
+          $kind = KEYS[VALID.find_index(val)]
         end
       end
-       @@tokenKind
+       $kind
     end
 
-    
+
     # returns current token kind (Symbol)
     def get_token_kind
       for val in VALID
-        if val.match?(@@Array[@@position])
-          @@tokenKind= KEYS[VALID.find_index(val)]
+        if val.match?($Array[$position])
+          $kind = KEYS[VALID.find_index(val)]
         end
       end
-       @@tokenKind
+       $kind
     end
 
     # textual representation of current token
     def get_text
-      @@Array[@@position]
+      $Array[$position]
     end
 end
 
