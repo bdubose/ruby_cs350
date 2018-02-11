@@ -3,75 +3,82 @@ require_relative './symbol'
 class SimpTokenizer
     
    
-    Keys=Symbol::SYMBOLS.keys
-    Valid = Symbol::SYMBOLS.values
-    Hash = Symbol::SYMBOLS
-    @tokenkind = Keys[1]
-    puts @tokenkind
-
+    KEYS=Symbol::SYMBOLS.keys
+    VAILD = Symbol::SYMBOLS.values
+    HASH = Symbol::SYMBOLS
+    @@tokenKind=KEYS[1]
 
     
     #constructor 
     def initialize(str)
     
-        if (str.empty?)
+        if str.empty?
                 puts "Invalid String"
         else
-             @s = StringScanner.new(str)
+             @@s = StringScanner.new(str)
+             @@w = @@s
         end 
         
     end
     
     
     #is this a valid token
-    def isValidToken(token)
+    def valid_token(token)
         
-#        iterating over a hash map 
-#         limit = Hash.length
-#        for counter in 0..limit
-#            if(token.match(Hash.values[counter]))
-#                puts Hash.values[counter]  
-#            end 
-#        end 
-        
-        for val in Valid
-            if(token.match(val))
+        #iterating over a hash map 
+         for val in VALID
+            if token.match?(val)
+                puts token
                 return true
             end
             
         end 
+         false
+    end
+=begin
+        limit = Hash.length
+        for counter in 0..limit
+            if token.match(Hash.values[counter])
+                puts Hash.values[counter] 
+                return true
+            end 
+        end
         return false
     end 
-    
-=begin
-    def consume()
-        if(s.eos?)
-            return true
+=end
+
+    def consume(token)
+        if @@s.eos?
+            @@tokenKind="N/A"
+            return
         end
-         for val in Valid
-            if(s.scan(val))
-                tokenKind = Keys[1]
-            else 
-                return false
+
+        limit2 = VALID.length
+        for counter in 0..limit2
+            if @@s.match(VALID[counter])
+                @@w=  @@s.matched
+                @@tokenKind = KEYS[counter]
             end
-            
+        end
+
         
     end
-=end
+
     
     #returns token kind (Symbol) (does not show to console for some reason)
-    def getKind()
-        return @tokenKind
+    def get_token_kind()
+         @@tokenKind
     end
     
     #textual representation of next token
-    def getText()
-        return @s.string
+    def get_text()
+         @@w.string
     end 
 end
 
 
 m = SimpTokenizer.new("the string")
-puts m.getKind()
-puts m.isValidToken("abcd")
-puts m.getText()
+m.valid_token("abcdffhj5 + 3783")
+#m.consume("the string")
+puts m.get_token_kind
+puts m.get_text
