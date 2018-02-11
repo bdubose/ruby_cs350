@@ -4,81 +4,90 @@ class SimpTokenizer
     
    
     KEYS=Symbol::SYMBOLS.keys
-    VAILD = Symbol::SYMBOLS.values
-    HASH = Symbol::SYMBOLS
-    @@tokenKind=KEYS[1]
+    VALID = Symbol::SYMBOLS.values
+    @@tokenKind
+    @@position=0
+    @@Array
 
-    
     #constructor 
     def initialize(str)
     
         if str.empty?
-                puts "Invalid String"
+                print "Invalid String"
         else
-             @@s = StringScanner.new(str)
-             @@w = @@s
-        end 
+          @@Array = str.split
+          @@Array << "EOF"
+          print @@Array
+        end
         
     end
     
     
     #is this a valid token
     def valid_token(token)
-        
-        #iterating over a hash map 
          for val in VALID
-            if token.match?(val)
-                puts token
+            if val.match?(token)
                 return true
             end
             
         end 
          false
     end
-=begin
-        limit = Hash.length
-        for counter in 0..limit
-            if token.match(Hash.values[counter])
-                puts Hash.values[counter] 
-                return true
-            end 
-        end
-        return false
-    end 
-=end
 
-    def consume(token)
-        if @@s.eos?
+
+    def consume()
+
+        if @@position == (@@Array.length)-1
             @@tokenKind="N/A"
-            return
+            return true
         end
 
-        limit2 = VALID.length
-        for counter in 0..limit2
-            if @@s.match(VALID[counter])
-                @@w=  @@s.matched
-                @@tokenKind = KEYS[counter]
-            end
+        res =@@Array[@@position+1]
+        for val in VALID
+          if val.match?(res)
+            @@tokenKind= KEYS[VALID.find_index(val)]
+            return true
+          end
+
         end
 
-        
     end
 
     
-    #returns token kind (Symbol) (does not show to console for some reason)
+    #returns token kind (Symbol)
     def get_token_kind()
          @@tokenKind
     end
     
     #textual representation of next token
     def get_text()
-         @@w.string
-    end 
+      @@position += 1
+      @@Array[@@position-1]
+    end
 end
 
 
-m = SimpTokenizer.new("the string")
-m.valid_token("abcdffhj5 + 3783")
-#m.consume("the string")
-puts m.get_token_kind
+m = SimpTokenizer.new("the + )")
+m.consume
+print "\n The next token is: "
+puts  m.get_token_kind
+print "\n The text of current token is: "
+puts m.get_text
+
+m.consume
+print "\n The next token is: "
+puts  m.get_token_kind
+print "\n The text of current token is: "
+puts m.get_text
+
+m.consume
+print "\n The next token is: "
+puts  m.get_token_kind
+print "\n The text of current token is: "
+puts m.get_text
+
+m.consume
+print "\n The next token is: "
+puts  m.get_token_kind
+print "\n The text of current token is: "
 puts m.get_text
