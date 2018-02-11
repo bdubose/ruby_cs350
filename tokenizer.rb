@@ -1,5 +1,5 @@
 require 'strscan'
-require_relative './symbol'
+require './symbol'
 class SimpTokenizer
     
    
@@ -9,21 +9,20 @@ class SimpTokenizer
     @@position=0
     @@Array
 
-    #constructor 
+    # constructor
     def initialize(str)
     
         if str.empty?
-                print "Invalid String"
+                print 'Invalid String'
         else
           @@Array = str.split
-          @@Array << "EOF"
+          @@Array << 'EOF'
           print @@Array
         end
         
     end
-    
-    
-    #is this a valid token
+
+    # is this a valid token
     def valid_token(token)
          for val in VALID
             if val.match?(token)
@@ -35,59 +34,63 @@ class SimpTokenizer
     end
 
 
-    def consume()
-
+    # consumes the current token
+    def next_token
+        @@position+=1
         if @@position == (@@Array.length)-1
-            @@tokenKind="N/A"
-            return true
+            @@tokenKind='N/A'
+             true
         end
+    end
 
-        res =@@Array[@@position+1]
-        for val in VALID
-          if val.match?(res)
-            @@tokenKind= KEYS[VALID.find_index(val)]
-            return true
-          end
-
+    # returns the kind of the next sequential token (SYMBOL)
+    def next_token_kind
+      for val in VALID
+        if val.match?(@@Array[@@position+1])
+          @@tokenKind= KEYS[VALID.find_index(val)]
         end
-
+      end
+       @@tokenKind
     end
 
     
-    #returns token kind (Symbol)
-    def get_token_kind()
-         @@tokenKind
+    # returns current token kind (Symbol)
+    def get_token_kind
+      for val in VALID
+        if val.match?(@@Array[@@position])
+          @@tokenKind= KEYS[VALID.find_index(val)]
+        end
+      end
+       @@tokenKind
     end
-    
-    #textual representation of next token
-    def get_text()
-      @@position += 1
-      @@Array[@@position-1]
+
+    # textual representation of current token
+    def get_text
+      @@Array[@@position]
     end
 end
 
+m = SimpTokenizer.new('the + )')
 
-m = SimpTokenizer.new("the + )")
-m.consume
 print "\n The next token is: "
-puts  m.get_token_kind
+puts  m.next_token_kind
 print "\n The text of current token is: "
 puts m.get_text
 
-m.consume
+m.next_token
 print "\n The next token is: "
-puts  m.get_token_kind
+puts  m.next_token_kind
 print "\n The text of current token is: "
 puts m.get_text
 
-m.consume
+m.next_token
 print "\n The next token is: "
-puts  m.get_token_kind
+puts  m.next_token_kind
 print "\n The text of current token is: "
 puts m.get_text
 
-m.consume
+m.next_token
 print "\n The next token is: "
-puts  m.get_token_kind
+puts  m.next_token_kind
 print "\n The text of current token is: "
 puts m.get_text
