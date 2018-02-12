@@ -6,7 +6,7 @@ class SimpTokenizer
     VALID = Symbol::SYMBOLS.values
     $kind
     $position = 0
-    $Array = []
+    $array = []
 
     # constructor
     def initialize(str)
@@ -14,9 +14,11 @@ class SimpTokenizer
         if str.empty?
                 print 'Invalid String'
         else
-          $Array = str.split
-          $Array << 'EOF'
-          print $Array
+          # Will change to loop to include all SYMBOLS
+          string = str.gsub(/\s+/, ' ').split(/(;)/).join(' ').split(/(\+)/).join(' ').split(/(:=)/).join(' ').split(/\s+/)
+          $array = string
+          $array << 'EOF'
+          print $array
         end
 
     end
@@ -36,7 +38,7 @@ class SimpTokenizer
     # consumes the current token
     def next_token
         $position += 1
-        if $position == ($Array.length)-1
+        if $position == ($array.length)-1
             $kind='N/A'
              true
         end
@@ -45,7 +47,7 @@ class SimpTokenizer
     # returns the kind of the next sequential token (SYMBOL)
     def next_token_kind
       for val in VALID
-        if val.match?($Array[$position+1])
+        if val.match?($array[$position+1])
           $kind = KEYS[VALID.find_index(val)]
         end
       end
@@ -56,7 +58,7 @@ class SimpTokenizer
     # returns current token kind (Symbol)
     def get_token_kind
       for val in VALID
-        if val.match?($Array[$position])
+        if val.match?($array[$position])
           $kind = KEYS[VALID.find_index(val)]
         end
       end
@@ -65,31 +67,18 @@ class SimpTokenizer
 
     # textual representation of current token
     def get_text
-      $Array[$position]
+      $array[$position]
     end
 end
 
-m = SimpTokenizer.new('the + )')
+#TESTING
 
-print "\n The next token is: "
-puts  m.next_token_kind
-print "\n The text of current token is: "
-puts m.get_text
+m = SimpTokenizer.new('temp:=prev+curr; temp:= prev +   curr; 5+:=4 temp   ()  :=  prev + curr; temp:= prev+curr; 5 + := 4')
 
-m.next_token
-print "\n The next token is: "
-puts  m.next_token_kind
-print "\n The text of current token is: "
-puts m.get_text
-
-m.next_token
-print "\n The next token is: "
-puts  m.next_token_kind
-print "\n The text of current token is: "
-puts m.get_text
-
-m.next_token
-print "\n The next token is: "
-puts  m.next_token_kind
-print "\n The text of current token is: "
-puts m.get_text
+  for i in 0...$array.length
+    print "\n The text of current token is: "
+    puts m.get_text
+    print "\n The next token is: "
+    puts  m.next_token_kind
+    m.next_token
+  end
