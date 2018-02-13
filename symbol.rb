@@ -32,6 +32,8 @@ class Symbol
       :LT => /</,
       :EQ => /=/,
       :SEMI_COL => /;/,
-      :ASSIGN_OP => /:=/
+      :ASSIGN_OP => /:=/,
+      :EOF => -1,
+      :COMMENT => /(\/\/).*/
   }
 end
