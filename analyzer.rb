@@ -26,12 +26,14 @@ class Analyzer
   end
 
   def log_exp?
-    (log_term? and lang_and? and log_exp?)  \
+    puts 'in log_exp?'
+    (log_factor?) \
     or                                      \
-    (log_factor?)
+    (log_term? and lang_and? and log_exp?) #recursive!!
   end
 
   def log_term?
+    puts 'in log_term?'
     (lang_not? and log_factor?) \
     or                          \
     (log_factor?)
@@ -42,6 +44,7 @@ class Analyzer
   end
 
   def log_rel_op?
+    puts 'in log_rel_op?'
     (add_op? and (lte? or lt? or eq?) and add_op?)
   end
 
@@ -132,6 +135,7 @@ class Analyzer
     ret = @tokenizer.get_token_kind == :LANG_IF
     if ret
       @tokenizer.next_token
+      puts 'if ack'
     end
     ret
   end
@@ -243,9 +247,11 @@ class Analyzer
   end
 
   def lt?
+    puts 'in lt'
     ret = @tokenizer.get_token_kind == :LT
     if ret
       @tokenizer.next_token
+      puts 'lt ack'
     end
     ret
   end

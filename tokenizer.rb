@@ -63,6 +63,7 @@ class SimpTokenizer
           break
         end
       end
+      puts "current kind: #{$kind}"
        $kind
     end
 
