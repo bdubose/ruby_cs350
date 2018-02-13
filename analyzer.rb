@@ -259,6 +259,7 @@ class Analyzer
   end
 
   def assign_op?
+    puts 'in aop'
     ret = @tokenizer.get_token_kind == :ASSIGN_OP
     if ret
       puts 'aop ack'
