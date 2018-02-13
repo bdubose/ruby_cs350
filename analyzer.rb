@@ -8,14 +8,16 @@ class Analyzer
   end
 
   def valid_stmts?
-    ret = true
-    while ret and not eof? or lang_end? or lang_else?
-      ret = (ret and valid_stmt? and semi_colon?) # make sure there is a semicolon
-    end
-    ret
+    #ret = true
+    #while ret and not eof? or lang_end? or lang_else?
+    #  ret = (ret and valid_stmt? and semi_colon?) # make sure there is a semicolon
+    #end
+    #ret
+    valid_stmt? and semi_colon? # TODO: read more statements
   end
 
   def valid_stmt?
+    puts 'In valid_stmt?'
     (identifier? and assign_op? and add_op?)                                                              \
     or                                                                                                    \
     (lang_if? and log_exp? and lang_then? and valid_stmts? and (lang_end? or (lang_else? and valid_stmts? and lang_end?)))                                \
@@ -103,14 +105,17 @@ class Analyzer
   def integer?
     ret = @tokenizer.get_token_kind == Symbol::SYMBOLS[:INTEGER]
     if ret
+      puts 'int ack'
       @tokenizer.next_token
     end
     ret
   end
 
   def identifier?
+    puts 'In identifier'
     ret = @tokenizer.get_token_kind == Symbol::SYMBOLS[:IDENTIFIER]
     if ret
+      puts 'Identifier acknowledged'
       @tokenizer.next_token
     end
     ret
@@ -263,6 +268,7 @@ class Analyzer
   def assign_op?
     ret = @tokenizer.get_token_kind == Symbol::SYMBOLS[:ASSIGN_OP]
     if ret
+      puts 'aop ack'
       @tokenizer.next_token
     end
     ret
@@ -271,6 +277,7 @@ class Analyzer
   def semi_colon?
     ret = @tokenizer.get_token_kind == Symbol::SYMBOLS[:SEMI_COL]
     if ret
+      puts 'semicol ack'
       @tokenizer.next_token
     end
     ret
@@ -285,7 +292,7 @@ class Analyzer
   end
 
   def eof?
-    @tokenizer.get_token_kind == Symbol::SYMBOLS[:EOF]
+    @tokenizer.get_token_kind == 'N/A'
     # shouldn't be a next token
   end
   #endregion

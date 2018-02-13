@@ -21,23 +21,14 @@ if ARGV.length == 1
     end
 
     tokenizer = SimpTokenizer.new(string_contents)
-    #tokenizer.next_token
-    go = gets.chomp
-    while go != 'q'
-      puts "#{tokenizer.get_token_kind}: #{tokenizer.get_text}"
-      go = gets.chomp
-      tokenizer.next_token
+    analyzer = Analyzer.new(tokenizer)
+
+    valid = analyzer.valid_program?
+    if valid
+      puts "#{filename} is a valid SimPL program. Congrats."
+    else
+      puts "#{filename} has an error."
     end
-    #analyzer = Analyzer.new(tokenizer)
-#
-    ##valid = analyzer.valid_program?
-    #valid = false
-#
-    #if valid
-    #  puts "#{filename} is a valid SimPL program. Congrats."
-    #else
-    #  puts "#{filename} has an error."
-    #end
 
   else
     puts 'ERROR: The given filename does not exist.'
