@@ -17,7 +17,7 @@ if ARGV.length == 1
     file = File.open(filename)
 
     file.each_line do |line|
-      string_contents += line
+      string_contents += (line + '\n')
     end
 
     tokenizer = SimpTokenizer.new(string_contents)
