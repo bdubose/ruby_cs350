@@ -48,7 +48,7 @@ class SimpTokenizer
     def next_token_kind
       for val in VALID
         if val.match?($array[$position+1])
-          $kind = KEYS[VALID.find_index(val)]
+          $kind = KEYS[VALID.find_index(val)].to_sym
         end
       end
        $kind
@@ -59,7 +59,7 @@ class SimpTokenizer
     def get_token_kind
       for val in VALID
         if val.match?($array[$position])
-          $kind = KEYS[VALID.find_index(val)]
+          $kind = KEYS[VALID.find_index(val)].to_sym
         end
       end
        $kind
