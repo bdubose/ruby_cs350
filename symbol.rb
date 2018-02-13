@@ -8,7 +8,6 @@ class Symbol
       :MINUS => /-/,
       :DIV => /\//,
       #:FACTOR => 5,
-      :IDENTIFIER => /^[a-zA-Z][a-zA-Z0-9_]*$/,
       :INTEGER => /[0-9]+/,
       :OPEN_PAREN => /\(/,
       :CLOSE_PAREN => /\)/,
@@ -34,6 +33,7 @@ class Symbol
       :SEMI_COL => /;/,
       :ASSIGN_OP => /:=/,
       #:EOF => -1,
-      :COMMENT => /(\/\/).*/
+      :COMMENT => /(\/\/).*/,
+      :IDENTIFIER => /^[a-zA-Z][a-zA-Z0-9_]*$/,
   }
 end

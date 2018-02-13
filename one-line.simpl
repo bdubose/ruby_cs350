@@ -1,0 +1,3 @@
+if nxt < 1 then
+    prev := 0;
+end;

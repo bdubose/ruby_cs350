@@ -60,6 +60,7 @@ class SimpTokenizer
       for val in VALID
         if val.match?($array[$position])
           $kind = KEYS[VALID.find_index(val)].to_sym
+          break
         end
       end
        $kind

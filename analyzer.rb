@@ -4,7 +4,7 @@ class Analyzer
   end
 
   def valid_program?
-    valid_stmts? and eof?
+    valid_stmts? #and eof? TODO: need to read EOF
   end
 
   def valid_stmts?
@@ -137,9 +137,11 @@ class Analyzer
   end
 
   def lang_then?
+    puts 'in lang_then?'
     ret = @tokenizer.get_token_kind == :LANG_THEN
     if ret
       @tokenizer.next_token
+      puts 'lang_then ack'
     end
     ret
   end
