@@ -4,15 +4,15 @@ class Analyzer
   end
 
   def valid_program?
-    valid_statements?
+    valid_stmts? and eof?
   end
 
-  # TODO: not sure if this is going to be right
   def valid_stmts?
     ret = true
-    until eof?
-      ret = (ret and valid_stmt? and semi_colon?) # valid statements until eof, followed by semi_colon
+    while valid_stmt?
+      ret = (ret and semi_colon?) # make sure there is a semicolon
     end
+    ret
   end
 
   def valid_stmt?
