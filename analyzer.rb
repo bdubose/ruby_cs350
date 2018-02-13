@@ -9,8 +9,8 @@ class Analyzer
 
   def valid_stmts?
     ret = true
-    while valid_stmt?
-      ret = (ret and semi_colon?) # make sure there is a semicolon
+    while ret and not eof? or lang_end? or lang_else?
+      ret = (ret and valid_stmt? and semi_colon?) # make sure there is a semicolon
     end
     ret
   end

@@ -33,7 +33,7 @@ class Symbol
       :EQ => /=/,
       :SEMI_COL => /;/,
       :ASSIGN_OP => /:=/,
-      :EOF => -1,
+      #:EOF => -1,
       :COMMENT => /(\/\/).*/
   }
 end

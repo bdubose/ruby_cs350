@@ -17,19 +17,27 @@ if ARGV.length == 1
     file = File.open(filename)
 
     file.each_line do |line|
-      string_contents += (line + '\n')
+      string_contents += line
     end
 
     tokenizer = SimpTokenizer.new(string_contents)
-    analyzer = Analyzer.new(tokenizer)
-
-    valid = analyzer.valid_program?
-
-    if valid
-      puts "#{filename} is a valid SimPL program. Congrats."
-    else
-      puts "#{filename} has an error."
+    #tokenizer.next_token
+    go = gets.chomp
+    while go != 'q'
+      puts "#{tokenizer.get_token_kind}: #{tokenizer.get_text}"
+      go = gets.chomp
+      tokenizer.next_token
     end
+    #analyzer = Analyzer.new(tokenizer)
+#
+    ##valid = analyzer.valid_program?
+    #valid = false
+#
+    #if valid
+    #  puts "#{filename} is a valid SimPL program. Congrats."
+    #else
+    #  puts "#{filename} has an error."
+    #end
 
   else
     puts 'ERROR: The given filename does not exist.'

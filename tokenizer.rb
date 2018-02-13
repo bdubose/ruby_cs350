@@ -72,7 +72,7 @@ class SimpTokenizer
 end
 
 #TESTING
-
+=begin
 m = SimpTokenizer.new('temp:=prev+curr; temp:= prev +   curr; 5+:=4 temp   ()  :=  prev + curr; temp:= prev+curr; 5 + := 4')
 
   for i in 0...$array.length
@@ -82,3 +82,4 @@ m = SimpTokenizer.new('temp:=prev+curr; temp:= prev +   curr; 5+:=4 temp   ()  :
     puts  m.next_token_kind
     m.next_token
   end
+=end
