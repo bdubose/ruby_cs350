@@ -10,8 +10,9 @@ class Analyzer
   def valid_stmts?
     until eof? or @tokenizer.get_token_kind == :LANG_END or @tokenizer.get_token_kind == :LANG_ELSE
       if valid_stmt?
+        puts 'has seen full stmt'
         if semi_colon?
-          # yay, got a full statement and semicolon, continue
+          puts 'has seen a full statement + semicol'
         else # no semicolon found
           puts "Missing semicolon!"#" (At line: #{@tokenizer.get_line_number})"
           return false
@@ -21,6 +22,7 @@ class Analyzer
         return false
       end
     end
+    puts 'finished reading stmts, current token should be eof, end, or else'
   end
 
   def valid_stmt?
@@ -165,8 +167,10 @@ class Analyzer
   end
 
   def lang_end?
+    puts 'in lang end'
     ret = get_token == :LANG_END
     if ret
+      puts 'end ack'
       @tokenizer.next_token
     end
     ret
