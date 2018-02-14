@@ -41,7 +41,7 @@ class SimpTokenizer
     def next_token
         $position += 1
         if $position == ($array.length)-1
-            $kind='N/A'
+            $kind='EOF'
              true
         end
     end
