@@ -1,5 +1,5 @@
 class Analyzer
-  def initialize tokenizer
+  def initialize(tokenizer)
     @tokenizer = tokenizer
   end
 
@@ -8,12 +8,19 @@ class Analyzer
   end
 
   def valid_stmts?
-    #ret = true
-    #while ret and not eof? or lang_end? or lang_else?
-    #  ret = (ret and valid_stmt? and semi_colon?) # make sure there is a semicolon
-    #end
-    #ret
-    valid_stmt? and semi_colon? # TODO: read more statements
+    until eof? or @tokenizer.get_token_kind == :LANG_END or @tokenizer.get_token_kind == :LANG_ELSE
+      if valid_stmt?
+        if semi_colon?
+          # yay, got a full statement and semicolon, continue
+        else # no semicolon found
+          puts "Missing semicolon!"#" (At line: #{@tokenizer.get_line_number})"
+          return false
+        end
+      else # was not a valid statement
+        puts "Invalid statement!"#"(At line: #{@tokenizer.get_line_number})"
+        return false
+      end
+    end
   end
 
   def valid_stmt?
@@ -68,6 +75,7 @@ class Analyzer
     while @tokenizer.get_token_kind == :COMMENT
       @tokenizer.next_token
     end
+    @tokenizer.get_token_kind
   end
   def plus?
     ret = get_token == :PLUS
@@ -137,6 +145,7 @@ class Analyzer
   end
 
   def lang_if?
+    puts 'in if'
     ret = get_token == :LANG_IF
     if ret
       @tokenizer.next_token
