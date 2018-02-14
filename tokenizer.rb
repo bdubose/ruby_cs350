@@ -7,6 +7,7 @@ class SimpTokenizer
     $kind
     $position = 0
     $array = []
+    $line=0
 
     # constructor
     def initialize(str)
@@ -15,7 +16,8 @@ class SimpTokenizer
                 print 'Invalid String'
         else
           # Will change to loop to include all SYMBOLS
-          string = str.gsub(/\s+/, ' ').split(/(;)/).join(' ').split(/(\+)/).join(' ').split(/(:=)/).join(' ').split(/\s+/)
+          string = str.gsub(/\s+/, ' ').split(/(\\n)/).join(' ').split(/(;)/).join(' ').split(/(\+)/).join(' ').
+                 split(/(-)/).join(' ').split(/(:=)/).join(' ').split(/\s+/)
           $array = string
           $array << 'EOF'
           print $array
@@ -57,6 +59,21 @@ class SimpTokenizer
 
     # returns current token kind (Symbol)
     def get_token_kind
+      if (/\\n/).match?($array[$position])
+        puts "found nl"
+        $position++
+        $line+=1
+      end
+      if(/(\/\/)(.| )*/).match?($array[$position])
+        puts "im here"
+        puts get_token_kind
+        $kind = KEYS[VALID[25]].to_sym
+        until (/\\n/).match?($array[$position])
+          $position+=1
+          break
+        end
+      end
+
       for val in VALID
         if val.match?($array[$position])
           $kind = KEYS[VALID.find_index(val)].to_sym
@@ -71,11 +88,21 @@ class SimpTokenizer
     def get_text
       $array[$position]
     end
+  def get_line_number
+    $line
+  end
 end
 
 #TESTING
-=begin
-m = SimpTokenizer.new('temp:=prev+curr; temp:= prev +   curr; 5+:=4 temp   ()  :=  prev + curr; temp:= prev+curr; 5 + := 4')
+
+m = SimpTokenizer.new('prev:=0;
+curr := 1;
+
+for iter from 0 to N-1 do  //iterative fibonachi
+    tmp := prev+curr;
+    prev = curr;
+    curr := tmp;
+end;'.dump)
 
   for i in 0...$array.length
     print "\n The text of current token is: "
@@ -84,4 +111,3 @@ m = SimpTokenizer.new('temp:=prev+curr; temp:= prev +   curr; 5+:=4 temp   ()  :
     puts  m.next_token_kind
     m.next_token
   end
-=end

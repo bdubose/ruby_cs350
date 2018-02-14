@@ -20,7 +20,7 @@ if ARGV.length == 1
       string_contents += line
     end
 
-    tokenizer = SimpTokenizer.new(string_contents)
+    tokenizer = SimpTokenizer.new(string_contents.dump[1..(string_contents.dump.size-2)])
     analyzer = Analyzer.new(tokenizer)
 
     valid = analyzer.valid_program?
