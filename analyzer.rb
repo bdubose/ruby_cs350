@@ -64,8 +64,13 @@ class Analyzer
   end
 
   #region SYMBOLS
+  def get_token
+    while @tokenizer.get_token_kind == :COMMENT
+      @tokenizer.next_token
+    end
+  end
   def plus?
-    ret = @tokenizer.get_token_kind == :PLUS
+    ret = get_token == :PLUS
     if ret
       @tokenizer.next_token
     end
@@ -73,7 +78,7 @@ class Analyzer
   end
 
   def times?
-    ret = @tokenizer.get_token_kind == :TIMES
+    ret = get_token == :TIMES
     if ret
       @tokenizer.next_token
     end
@@ -81,7 +86,7 @@ class Analyzer
   end
 
   def minus?
-    ret = @tokenizer.get_token_kind == :MINUS
+    ret = get_token == :MINUS
     if ret
       @tokenizer.next_token
     end
@@ -89,7 +94,7 @@ class Analyzer
   end
 
   def div?
-    ret = @tokenizer.get_token_kind == :DIV
+    ret = get_token == :DIV
     if ret
       @tokenizer.next_token
     end
@@ -97,7 +102,7 @@ class Analyzer
   end
 
   def integer?
-    ret = @tokenizer.get_token_kind == :INTEGER
+    ret = get_token == :INTEGER
     if ret
       puts 'int ack'
       @tokenizer.next_token
@@ -107,7 +112,7 @@ class Analyzer
 
   def identifier?
     puts 'In identifier'
-    ret = @tokenizer.get_token_kind == :IDENTIFIER
+    ret = get_token == :IDENTIFIER
     if ret
       puts 'Identifier acknowledged'
       @tokenizer.next_token
@@ -116,7 +121,7 @@ class Analyzer
   end
 
   def open_paren?
-    ret = @tokenizer.get_token_kind == :OPEN_PAREN
+    ret = get_token == :OPEN_PAREN
     if ret
       @tokenizer.next_token
     end
@@ -124,7 +129,7 @@ class Analyzer
   end
 
   def close_paren?
-    ret = @tokenizer.get_token_kind == :CLOSE_PAREN
+    ret = get_token == :CLOSE_PAREN
     if ret
       @tokenizer.next_token
     end
@@ -132,7 +137,7 @@ class Analyzer
   end
 
   def lang_if?
-    ret = @tokenizer.get_token_kind == :LANG_IF
+    ret = get_token == :LANG_IF
     if ret
       @tokenizer.next_token
       puts 'if ack'
@@ -142,7 +147,7 @@ class Analyzer
 
   def lang_then?
     puts 'in lang_then?'
-    ret = @tokenizer.get_token_kind == :LANG_THEN
+    ret = get_token == :LANG_THEN
     if ret
       @tokenizer.next_token
       puts 'lang_then ack'
@@ -151,7 +156,7 @@ class Analyzer
   end
 
   def lang_end?
-    ret = @tokenizer.get_token_kind == :LANG_END
+    ret = get_token == :LANG_END
     if ret
       @tokenizer.next_token
     end
@@ -159,7 +164,7 @@ class Analyzer
   end
 
   def lang_for?
-    ret = @tokenizer.get_token_kind == :LANG_FOR
+    ret = get_token == :LANG_FOR
     if ret
       @tokenizer.next_token
     end
@@ -167,7 +172,7 @@ class Analyzer
   end
 
   def lang_to?
-    ret = @tokenizer.get_token_kind == :LANG_TO
+    ret = get_token == :LANG_TO
     if ret
       @tokenizer.next_token
     end
@@ -175,7 +180,7 @@ class Analyzer
   end
 
   def lang_from?
-    ret = @tokenizer.get_token_kind == :LANG_FROM
+    ret = get_token == :LANG_FROM
     if ret
       @tokenizer.next_token
     end
@@ -183,7 +188,7 @@ class Analyzer
   end
 
   def lang_else?
-    ret = @tokenizer.get_token_kind == :LANG_ELSE
+    ret = get_token == :LANG_ELSE
     if ret
       @tokenizer.next_token
     end
@@ -191,7 +196,7 @@ class Analyzer
   end
 
   def lang_do?
-    ret = @tokenizer.get_token_kind == :LANG_DO
+    ret = get_token == :LANG_DO
     if ret
       @tokenizer.next_token
     end
@@ -199,7 +204,7 @@ class Analyzer
   end
 
   def lang_by?
-    ret = @tokenizer.get_token_kind == :LANG_BY
+    ret = get_token == :LANG_BY
     if ret
       @tokenizer.next_token
     end
@@ -207,7 +212,7 @@ class Analyzer
   end
 
   def lang_true?
-    ret = @tokenizer.get_token_kind == :LANG_TRUE
+    ret = get_token == :LANG_TRUE
     if ret
       @tokenizer.next_token
     end
@@ -215,7 +220,7 @@ class Analyzer
   end
 
   def lang_false?
-    ret = @tokenizer.get_token_kind == :LANG_FALSE
+    ret = get_token == :LANG_FALSE
     if ret
       @tokenizer.next_token
     end
@@ -223,7 +228,7 @@ class Analyzer
   end
 
   def lang_not?
-    ret = @tokenizer.get_token_kind == :LANG_NOT
+    ret = get_token == :LANG_NOT
     if ret
       @tokenizer.next_token
     end
@@ -231,7 +236,7 @@ class Analyzer
   end
 
   def lang_and?
-    ret = @tokenizer.get_token_kind == :LANG_AND
+    ret = get_token == :LANG_AND
     if ret
       @tokenizer.next_token
     end
@@ -239,7 +244,7 @@ class Analyzer
   end
 
   def lte?
-    ret = @tokenizer.get_token_kind == :LTE
+    ret = get_token == :LTE
     if ret
       @tokenizer.next_token
     end
@@ -248,7 +253,7 @@ class Analyzer
 
   def lt?
     puts 'in lt'
-    ret = @tokenizer.get_token_kind == :LT
+    ret = get_token == :LT
     if ret
       @tokenizer.next_token
       puts 'lt ack'
@@ -257,7 +262,7 @@ class Analyzer
   end
 
   def eq?
-    ret = @tokenizer.get_token_kind == :EQ
+    ret = get_token == :EQ
     if ret
       @tokenizer.next_token
     end
@@ -266,7 +271,7 @@ class Analyzer
 
   def assign_op?
     puts 'in aop'
-    ret = @tokenizer.get_token_kind == :ASSIGN_OP
+    ret = get_token == :ASSIGN_OP
     if ret
       puts 'aop ack'
       @tokenizer.next_token
@@ -275,7 +280,7 @@ class Analyzer
   end
 
   def semi_colon?
-    ret = @tokenizer.get_token_kind == :SEMI_COL
+    ret = get_token == :SEMI_COL
     if ret
       puts 'semicol ack'
       @tokenizer.next_token
@@ -284,7 +289,7 @@ class Analyzer
   end
 
   def comment?
-    ret = @tokenizer.get_token_kind == :COMMENT
+    ret = get_token == :COMMENT
     if ret
       @tokenizer.next_token
     end
@@ -292,7 +297,7 @@ class Analyzer
   end
 
   def eof?
-    @tokenizer.get_token_kind == 'N/A'
+    get_token == 'N/A'
     # shouldn't be a next token
   end
   #endregion
