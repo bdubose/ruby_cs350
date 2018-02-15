@@ -40,10 +40,6 @@ class SimpTokenizer
     # consumes the current token
     def next_token
         $position += 1
-        if $position == ($array.length)-1
-            $kind='EOF'
-             true
-        end
     end
 
     # returns the kind of the next sequential token (SYMBOL)
@@ -59,6 +55,12 @@ class SimpTokenizer
 
     # returns current token kind (Symbol)
     def get_token_kind
+
+      if $position == (($array.length)-1) then
+        $kind ='EOF'
+        return  $kind
+      end
+
       if (/\\n/).match?($array[$position]) then
         puts "found nl"
         $position+=1
@@ -77,7 +79,7 @@ class SimpTokenizer
       end
 
       for val in VALID
-        if val.match?($array[$position])
+        if val.match?($array[$position]) then
           $kind = KEYS[VALID.find_index(val)].to_sym
           break
         end
