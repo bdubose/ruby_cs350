@@ -14,15 +14,16 @@ class Analyzer
         if semi_colon?
           puts 'has seen a full statement + semicol'
         else # no semicolon found
-          puts "Missing semicolon!"#" (At line: #{@tokenizer.get_line_number})"
+          puts "Missing semicolon! (At line: #{@tokenizer.get_line_number})"
           return false
         end
       else # was not a valid statement
-        puts "Invalid statement!"#"(At line: #{@tokenizer.get_line_number})"
+        puts "Invalid statement! (At line: #{@tokenizer.get_line_number})"
         return false
       end
     end
-    puts 'finished reading stmts, current token should be eof, end, or else'
+    puts "finished reading stmts, current token should be eof, end, or else: #{@tokenizer.get_token_kind}"
+    true
   end
 
   def valid_stmt?
@@ -310,6 +311,8 @@ class Analyzer
   end
 
   def eof?
+    puts 'Trying to see if the EOF is the current token'
+    puts "Current token is #{@tokenizer.get_token_kind} #{get_token}"
     get_token == 'EOF'
     # shouldn't be a next token
   end
