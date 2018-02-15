@@ -59,19 +59,21 @@ class SimpTokenizer
 
     # returns current token kind (Symbol)
     def get_token_kind
-      if (/\\n/).match?($array[$position])
+      if (/\\n/).match?($array[$position]) then
         puts "found nl"
-        $position++
+        $position+=1
         $line+=1
       end
-      if(/(\/\/)(.| )*/).match?($array[$position])
+
+      if(/(\/\/)(.| )*/).match?($array[$position]) then
         puts "im here"
+        $position+=1
         puts get_token_kind
-        $kind = KEYS[VALID[25]].to_sym
-        until (/\\n/).match?($array[$position])
+        $kind = KEYS[25].to_sym
+        while (/^[a-zA-Z][a-zA-Z0-9_]*$/).match?($array[$position])
           $position+=1
-          break
         end
+        $kind
       end
 
       for val in VALID
@@ -80,6 +82,7 @@ class SimpTokenizer
           break
         end
       end
+      puts get_text
       puts "current kind: #{$kind}"
        $kind
     end
@@ -94,7 +97,7 @@ class SimpTokenizer
 end
 
 #TESTING
-
+=begin
 m = SimpTokenizer.new('prev:=0;
 curr := 1;
 
@@ -111,3 +114,4 @@ end;'.dump)
     puts  m.next_token_kind
     m.next_token
   end
+=end

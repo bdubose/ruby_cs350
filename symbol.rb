@@ -8,7 +8,6 @@ class Symbol
       :TIMES => /\*/,
       :MINUS => /-/,
       :DIV => /\//,
-
       #:FACTOR => 5,
       :INTEGER => /[0-9]+/,
       :OPEN_PAREN => /\(/,
@@ -31,9 +30,8 @@ class Symbol
       #:LOG_FACTOR => 24,
       :LTE => /<=/,
       :LT => /</,
-      :EQ => /=/,
       :ASSIGN_OP => /:=/,
-
+      :EQ => /=/,
       #:EOF => -1,
       :COMMENT => /(\/\/)(.| )*/,
       :IDENTIFIER => /^[a-zA-Z][a-zA-Z0-9_]*$/,
