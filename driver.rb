@@ -1,3 +1,5 @@
+#!/bin/ruby
+
 # Branwin DuBose, Josh Echols
 # CS 401
 # Ruby Assignment

@@ -310,7 +310,7 @@ class Analyzer
   end
 
   def eof?
-    get_token == 'N/A'
+    get_token == 'EOF'
     # shouldn't be a next token
   end
   #endregion
