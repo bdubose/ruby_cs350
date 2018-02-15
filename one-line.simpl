@@ -1,2 +1,8 @@
 prev := 0;
-next := 1;
+if true then
+    smi := 3;
+    sm := smi + 3;
+else
+    bra := 0;
+    bro := bra - 2;
+end;

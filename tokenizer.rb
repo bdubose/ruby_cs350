@@ -7,7 +7,7 @@ class SimpTokenizer
     $kind
     $position = 0
     $array = []
-    $line=0
+    $line= 1
 
     # constructor
     def initialize(str)

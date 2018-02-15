@@ -3,6 +3,10 @@ class Analyzer
     @tokenizer = tokenizer
   end
 
+  def error(wanted)
+    puts "Found #{@tokenizer.get_text}, expected #{wanted} at line #{@tokenizer.get_line_number}."
+  end
+
   def valid_program?
     valid_stmts? #and eof? TODO: need to read EOF
   end
@@ -14,7 +18,7 @@ class Analyzer
         if semi_colon?
           puts 'has seen a full statement + semicol'
         else # no semicolon found
-          puts "Missing semicolon! (At line: #{@tokenizer.get_line_number})"
+          error('semicolon')
           return false
         end
       else # was not a valid statement
@@ -32,7 +36,14 @@ class Analyzer
     or                                                                                                    \
     (lang_if? and log_exp? and lang_then? and valid_stmts? and (lang_end? or (lang_else? and valid_stmts? and lang_end?)))                                \
     or                                                                                                    \
-    (lang_for? and identifier? and lang_from? and add_op? and lang_to? and add_op? and ((lang_do? and valid_stmts? and lang_end?) or lang_by? and add_op? and lang_do? and valid_stmts? and lang_end?))
+    if lang_for? and identifier? and lang_from? and add_op? and lang_to? and add_op?
+      if lang_do? and valid_stmts? and lang_end?
+        true
+      elsif lang_by? and add_op? and lang_do? and valid_stmts? and lang_end?
+        true
+      end
+      true
+    end
   end
 
   def log_exp?
@@ -70,7 +81,21 @@ class Analyzer
 
   def factor?
     puts 'in factor'
-    integer? or identifier? or (open_paren? and add_op? and close_paren?)
+    if integer? or identifier?
+      true
+    elsif open_paren?
+      if add_op?
+        if close_paren?
+          true
+        else
+          error('closing parenthesis')
+          false
+        end
+      end
+    else
+      error('integer, identifier, or open parenthesis')
+      false
+    end
   end
 
   #region SYMBOLS
