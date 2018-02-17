@@ -1,11 +1,9 @@
 require './symbol'
 class SimpTokenizer
-    
-   
-    KEYS = Symbol::SYMBOLS.keys
-    VALID = Symbol::SYMBOLS.values
-    $kind
-    $position = 0
+
+    ELEMENTS = Symbol::SYMBOLS
+
+    $index = 0
     $array = []
     $line= 1
 
@@ -16,104 +14,60 @@ class SimpTokenizer
                 print 'Invalid String'
         else
           # Will change to loop to include all SYMBOLS
-          string = str.gsub(/\s+/, ' ').split(/(\\n)/).join(' ').split(/(;)/).join(' ').split(/(\+)/).join(' ').
+          string = str.gsub(/\s+/, ' ').split(/(\\n)/).join(' ').split(/(<=)/).join(' ').split(/(;)/).join(' ').split(/(\+)/).join(' ').
                  split(/(-)/).join(' ').split(/(:=)/).join(' ').split(/\s+/)
           $array = string
           $array << 'EOF'
           print $array
         end
-
     end
-
-    # is this a valid token
-    def valid_token(token)
-         for val in VALID
-            if val.match?(token)
-                return true
-            end
-
-        end
-         false
-    end
-
 
     # consumes the current token
     def next_token
-        $position += 1
+        $index += 1
     end
-
-    # returns the kind of the next sequential token (SYMBOL)
-    def next_token_kind
-      for val in VALID
-        if val.match?($array[$position+1])
-          $kind = KEYS[VALID.find_index(val)].to_sym
-        end
-      end
-       $kind
-    end
-
 
     # returns current token kind (Symbol)
     def get_token_kind
 
-      if $position == (($array.length)-1) then
-        $kind ='EOF'
-        return  $kind
+      if $index == (($array.length)-1) then
+        kind ='EOF'
+        return  kind
       end
 
-      if (/\\n/).match?($array[$position]) then
+      if (/\\n/).match?($array[$index]) then
         puts "found nl"
-        $position+=1
+        $index+=1
         $line+=1
       end
 
-      if(/(\/\/)(.| )*/).match?($array[$position]) then
+      if(/(\/\/)(.| )*/).match?($array[$index]) then
         puts "im here"
-        $position+=1
+        $index+=1
         puts get_token_kind
-        $kind = KEYS[25].to_sym
-        while (/^[a-zA-Z][a-zA-Z0-9_]*$/).match?($array[$position])
-          $position+=1
+        kind = ELEMENTS.keys[25].to_sym
+        while (/^[a-zA-Z][a-zA-Z0-9_]*$/).match?($array[$index])
+          $index+=1
         end
-        $kind
+       return kind
       end
 
-      for val in VALID
-        if val.match?($array[$position]) then
-          $kind = KEYS[VALID.find_index(val)].to_sym
+      for val in ELEMENTS.values
+        if val.match?($array[$index]) then
+          kind = ELEMENTS.invert[val]
           break
         end
       end
       puts get_text
-      puts "current kind: #{$kind}"
-       $kind
+      puts "current kind: #{kind}"
+       kind
     end
 
     # textual representation of current token
     def get_text
-      $array[$position]
+      $array[$index]
     end
   def get_line_number
     $line
   end
 end
-
-#TESTING
-=begin
-m = SimpTokenizer.new('prev:=0;
-curr := 1;
-
-for iter from 0 to N-1 do  //iterative fibonachi
-    tmp := prev+curr;
-    prev = curr;
-    curr := tmp;
-end;'.dump)
-
-  for i in 0...$array.length
-    print "\n The text of current token is: "
-    puts m.get_text
-    print "\n The next token is: "
-    puts  m.next_token_kind
-    m.next_token
-  end
-=end
