@@ -40,7 +40,6 @@ class SimpTokenizer
           end
            $array
         end
-      print $array
     end
 
     # consumes the current token
@@ -76,8 +75,6 @@ class SimpTokenizer
           break
         end
       end
-      puts get_text
-      puts "current kind: #{kind}"
        kind
     end
 
