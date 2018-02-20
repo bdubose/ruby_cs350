@@ -8,15 +8,13 @@ class Analyzer
   end
 
   def valid_program?
-    valid_stmts? #and eof? TODO: need to read EOF
+    valid_stmts?
   end
 
   def valid_stmts?
     until eof? or @tokenizer.get_token_kind == :LANG_END or @tokenizer.get_token_kind == :LANG_ELSE
       if valid_stmt?
-        puts 'has seen full stmt'
         if semi_colon?
-          puts 'has seen a full statement + semicol'
         else # no semicolon found
           error('semicolon')
           return false
@@ -26,12 +24,10 @@ class Analyzer
         return false
       end
     end
-    puts "finished reading stmts, current token should be eof, end, or else: #{@tokenizer.get_token_kind}"
     true
   end
 
   def valid_stmt?
-    puts 'In valid_stmt?'
     (identifier? and assign_op? and add_op?)                                                              \
     or                                                                                                    \
     (lang_if? and log_exp? and lang_then? and valid_stmts? and (lang_end? or (lang_else? and valid_stmts? and lang_end?)))                                \
@@ -47,14 +43,12 @@ class Analyzer
   end
 
   def log_exp?
-    puts 'in log_exp?'
     (log_factor?) \
     or                                      \
     (log_term? and lang_and? and log_exp?) #recursive!!
   end
 
   def log_term?
-    puts 'in log_term?'
     (lang_not? and log_factor?) \
     or                          \
     (log_factor?)
@@ -65,22 +59,18 @@ class Analyzer
   end
 
   def log_rel_op?
-    puts 'in log_rel_op?'
     (add_op? and (lte? or lt? or eq?) and add_op?)
   end
 
   def add_op?
-    puts 'in add_op'
     (mul_op? and ((plus? or minus?) and add_op?) or true) # the or true is because mul_op? alone is sufficient
   end
 
   def mul_op?
-    puts 'in mul_op'
     (factor? and ((times? or div?) and mul_op?) or true) # the or true is because factor? alone is sufficient
   end
 
   def factor?
-    puts 'in factor'
     if integer? or identifier?
       true
     elsif open_paren?
@@ -140,17 +130,14 @@ class Analyzer
   def integer?
     ret = get_token == :INTEGER
     if ret
-      puts 'int ack'
       @tokenizer.next_token
     end
     ret
   end
 
   def identifier?
-    puts 'In identifier'
     ret = get_token == :IDENTIFIER
     if ret
-      puts 'Identifier acknowledged'
       @tokenizer.next_token
     end
     ret
@@ -173,30 +160,24 @@ class Analyzer
   end
 
   def lang_if?
-    puts 'in if'
     ret = get_token == :LANG_IF
     if ret
       @tokenizer.next_token
-      puts 'if ack'
     end
     ret
   end
 
   def lang_then?
-    puts 'in lang_then?'
     ret = get_token == :LANG_THEN
     if ret
       @tokenizer.next_token
-      puts 'lang_then ack'
     end
     ret
   end
 
   def lang_end?
-    puts 'in lang end'
     ret = get_token == :LANG_END
     if ret
-      puts 'end ack'
       @tokenizer.next_token
     end
     ret
@@ -291,11 +272,9 @@ class Analyzer
   end
 
   def lt?
-    puts 'in lt'
     ret = get_token == :LT
     if ret
       @tokenizer.next_token
-      puts 'lt ack'
     end
     ret
   end
@@ -309,10 +288,8 @@ class Analyzer
   end
 
   def assign_op?
-    puts 'in aop'
     ret = get_token == :ASSIGN_OP
     if ret
-      puts 'aop ack'
       @tokenizer.next_token
     end
     ret
@@ -321,7 +298,6 @@ class Analyzer
   def semi_colon?
     ret = get_token == :SEMI_COL
     if ret
-      puts 'semicol ack'
       @tokenizer.next_token
     end
     ret
@@ -336,8 +312,6 @@ class Analyzer
   end
 
   def eof?
-    puts 'Trying to see if the EOF is the current token'
-    puts "Current token is #{@tokenizer.get_token_kind} #{get_token}"
     get_token == 'EOF'
     # shouldn't be a next token
   end
