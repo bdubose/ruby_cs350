@@ -63,7 +63,7 @@ class SimpTokenizer
       if(/(\/\/)(.| )*/).match?($array[$index]) then
         $index+=1
         kind = ELEMENTS.keys[25].to_sym
-        while (/^[a-zA-Z][a-zA-Z0-9_]*$/).match?($array[$index])
+        while (!(/(\\n)/).match?($array[$index]))
           $index+=1
         end
        return kind
