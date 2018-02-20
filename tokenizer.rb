@@ -5,6 +5,8 @@ class SimpTokenizer
 
     $index = 0
     $array = []
+    $array2 = []
+
     $line= 1
 
     # constructor
@@ -14,12 +16,31 @@ class SimpTokenizer
                 print 'Invalid String'
         else
           # Will change to loop to include all SYMBOLS
-          string = str.gsub(/\s+/, ' ').split(/(\\n)/).join(' ').split(/(<=)/).join(' ').split(/(;)/).join(' ').split(/(\+)/).join(' ').
-                 split(/(-)/).join(' ').split(/(:=)/).join(' ').split(/\s+/)
+          string = str.gsub(/\s+/, ' ').split(/(=)/).join(' ').split(/(\/)/).join(' ').split(/(\\n)/).join(' ').split(/(<)/).join(' ').split(/(;)/).join(' ').split(/(\+)/).join(' ').
+                 split(/(-)/).join(' ').split(/(<)/).join(' ').split(/(\+)/).join(' ').split(/(:)/).join(' ').split(/(\()/).join(' ').split(/(\))/).join(' ').split(/(\*)/).join(' ').split(/\s+/)
           $array = string
           $array << 'EOF'
-          print $array
+
+          for i in 0..$array.length
+            if (/:/).match?($array[i]) && (/=/).match?($array[i+1]) then
+              $array.insert(i , ":=")
+              $array.delete_at(i+1)
+              $array.delete_at(i+1)
+            end
+            if (/\//).match?($array[i]) && (/\//).match?($array[i+1]) then
+              $array.insert(i , "//")
+              $array.delete_at(i+1)
+              $array.delete_at(i+1)
+            end
+            if (/</).match?($array[i]) && (/=/).match?($array[i+1]) then
+              $array.insert(i , "<=")
+              $array.delete_at(i+1)
+              $array.delete_at(i+1)
+            end
+          end
+           $array
         end
+      print $array
     end
 
     # consumes the current token
@@ -36,15 +57,12 @@ class SimpTokenizer
       end
 
       if (/\\n/).match?($array[$index]) then
-        puts "found nl"
         $index+=1
         $line+=1
       end
 
       if(/(\/\/)(.| )*/).match?($array[$index]) then
-        puts "im here"
         $index+=1
-        puts get_token_kind
         kind = ELEMENTS.keys[25].to_sym
         while (/^[a-zA-Z][a-zA-Z0-9_]*$/).match?($array[$index])
           $index+=1
