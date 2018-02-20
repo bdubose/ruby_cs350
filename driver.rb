@@ -13,7 +13,6 @@ filename = ARGV[0]
 
 if ARGV.length == 1
   if File.exist? filename
-    puts 'File found!'
 
     string_contents = ''
     file = File.open(filename)
