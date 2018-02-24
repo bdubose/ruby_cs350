@@ -4,7 +4,8 @@ class Analyzer
   end
 
   def error(wanted)
-    puts "Found #{@tokenizer.get_text}, expected #{wanted} at line #{@tokenizer.get_line_number}."
+    puts "ERROR: Found #{@tokenizer.get_text}, expected #{wanted} at line #{@tokenizer.get_line_number}."
+    exit
   end
 
   def valid_program?
@@ -15,11 +16,11 @@ class Analyzer
     until eof? or @tokenizer.get_token_kind == :LANG_END or @tokenizer.get_token_kind == :LANG_ELSE
       if valid_stmt?
         if semi_colon?
-        else # no semicolon found
-          error('semicolon')
-          return false
-        end
-      else # was not a valid statement
+          else # no semicolon found
+            error('semicolon')
+            return false
+          end
+          else # was not a valid statement
         puts "Invalid statement! (At line: #{@tokenizer.get_line_number})"
         return false
       end
@@ -84,7 +85,7 @@ class Analyzer
       end
     else
       error('integer, identifier, or open parenthesis')
-      false
+        false
     end
   end
 

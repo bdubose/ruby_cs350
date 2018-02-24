@@ -5,8 +5,6 @@ class SimpTokenizer
 
     $index = 0
     $array = []
-    $array2 = []
-
     $line= 1
 
     # constructor
@@ -20,6 +18,7 @@ class SimpTokenizer
                  split(/(-)/).join(' ').split(/(<)/).join(' ').split(/(\+)/).join(' ').split(/(:)/).join(' ').split(/(\()/).join(' ').split(/(\))/).join(' ').split(/(\*)/).join(' ').split(/\s+/)
           $array = string
           $array << 'EOF'
+
 
           for i in 0..$array.length
             if (/:/).match?($array[i]) && (/=/).match?($array[i+1]) then

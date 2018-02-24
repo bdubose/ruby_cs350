@@ -9,7 +9,6 @@ class Symbol
       :MINUS => /-/,
       :DIV => /\//,
       #:FACTOR => 5,
-      :INTEGER => /[0-9]+/,
       :OPEN_PAREN => /\(/,
       :CLOSE_PAREN => /\)/,
       :LANG_IF => /if/,
@@ -35,5 +34,7 @@ class Symbol
       #:EOF => -1,
       :COMMENT => /(\/\/)(.| )*/,
       :IDENTIFIER => /^[a-zA-Z][a-zA-Z0-9_]*$/,
+      :INTEGER => /[0-9]+/,
+
   }
 end
